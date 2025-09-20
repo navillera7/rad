@@ -27,7 +27,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: "0.135.0"
+          hugo-version: "0.152.0"
           extended: true
 
       # 👉 Modules 방식을 쓰고 vendor/를 커밋한 경우, 바로 빌드하면 됩니다.
