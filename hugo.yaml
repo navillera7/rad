@@ -1,8 +1,6 @@
-languageCode: en-us
-title: 무슨무슨 포트폴리오 모아놓는곳
-module:
-  imports:
-    - path: github.com/imfing/hextra
+baseURL: "https://<USER>.github.io/<REPO>/"
+title: "My Hextra Site"
+theme: "github.com/imfing/hextra" 
 
 menu:
   main:
