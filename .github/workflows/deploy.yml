@@ -1,0 +1,48 @@
+name: Deploy Hugo site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "0.135.0"
+          extended: true
+
+      # 👉 Modules 방식을 쓰고 vendor/를 커밋한 경우, 바로 빌드하면 됩니다.
+      # 만약 vendor/를 커밋하지 않았다면 아래 Go 설정 + hugo mod get 등을 추가하세요.
+      # - name: Setup Go (only if you didn't vendor modules)
+      #   uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "1.22"
+
+      - name: Build
+        run: hugo --gc --minify
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
